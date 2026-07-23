@@ -27,7 +27,7 @@ jobs:
       - name: Build and push Docker image
       
         run: |
-          IMAGE_NAME="${{ env.REGISTRY }}/$IMAGE_REPOSITORY"
+          IMAGE_NAME="${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }}"
           docker build -t $IMAGE_NAME:latest -t $IMAGE_NAME:${{ github.run_number }} -f ./deployment/Dockerfile .
           docker push $IMAGE_NAME:latest
           docker push $IMAGE_NAME:${{ github.run_number }}
@@ -39,7 +39,7 @@ jobs:
 
       - name: Deploy to Container App
         run: |
-          IMAGE_URI="${{ env.REGISTRY }}/$IMAGE_REPOSITORY}:${{ github.run_number }}"
+          IMAGE_URI="${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }}:${{ github.run_number }}"
           
           # EXTRACT INDIVIDUAL AUTH FIELDS OUT OF YOUR EXISTING JSON SECRET
           SP_TENANT=$(echo '${{ secrets.AZURE_CREDENTIALS }}' | jq -r '.tenantId')
